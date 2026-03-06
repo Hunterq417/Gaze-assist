@@ -1,0 +1,23 @@
+# ---- Visualize a random selection of 25 gaze images ----
+num_samples_to_show = 25
+indices = random.sample(range(X.shape[0]), num_samples_to_show)
+
+plt.figure(figsize=(10,10))
+for i, idx in enumerate(indices):
+    plt.subplot(5,5,i+1)
+    plt.imshow(X[idx], cmap='gray')  # assuming grayscale images
+    plt.axis('off')
+plt.suptitle("Sample Gaze Images from X Dataset", fontsize=16)
+plt.show()
+
+# ---- Visualize corresponding gaze points from Y ----
+# Assuming Y has shape (num_samples, 2) with (x, y) coordinates
+sample_Y = Y[indices]
+
+plt.figure(figsize=(6,6))
+plt.scatter(sample_Y[:,0], sample_Y[:,1], c='red', alpha=0.7)
+plt.title("Gaze Coordinates from Y Dataset", fontsize=14)
+plt.xlabel("X Coordinate")
+plt.ylabel("Y Coordinate")
+plt.grid(True)
+plt.show()

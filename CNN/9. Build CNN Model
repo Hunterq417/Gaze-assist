@@ -1,0 +1,26 @@
+model = models.Sequential([
+
+    # First convolution block
+    layers.Conv2D(32, (3,3), activation='relu', input_shape=(64,64,1)),
+    layers.MaxPooling2D(2,2),
+
+    # Second convolution block
+    layers.Conv2D(64, (3,3), activation='relu'),
+    layers.MaxPooling2D(2,2),
+
+    # Third convolution block
+    layers.Conv2D(128, (3,3), activation='relu'),
+    layers.MaxPooling2D(2,2),
+
+    # Flatten feature maps
+    layers.Flatten(),
+
+    # Fully connected layer
+    layers.Dense(128, activation='relu'),
+
+    # Output 3D gaze vector
+    layers.Dense(3),
+
+    # Normalize output to unit vector
+    layers.Lambda(lambda x: tf.math.l2_normalize(x, axis=1))
+])

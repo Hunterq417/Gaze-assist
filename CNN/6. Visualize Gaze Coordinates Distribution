@@ -1,0 +1,41 @@
+num_samples = 20000
+indices = np.random.choice(X.shape[0], num_samples, replace=False)
+indices = np.sort(indices)
+
+X_sample = X[indices].astype("float32")
+Y_sample = Y[indices]
+
+print(f"Sampled X shape: {X_sample.shape}")
+print(f"Sampled Y shape: {Y_sample.shape}")
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Scatter plot of all sampled gaze points
+plt.figure(figsize=(6,6))
+plt.scatter(Y_sample[:,0], Y_sample[:,1], c='blue', alpha=0.3, s=10)
+plt.title("Scatter of Gaze Coordinates (Y_sample)", fontsize=14)
+plt.xlabel("X Coordinate")
+plt.ylabel("Y Coordinate")
+plt.grid(True)
+plt.show()
+
+# Heatmap / density of gaze points
+plt.figure(figsize=(6,6))
+sns.kdeplot(
+    x=Y_sample[:,0], y=Y_sample[:,1],
+    fill=True, cmap='Reds', bw_adjust=0.5, thresh=0.05
+)
+plt.title("Density Heatmap of Gaze Coordinates", fontsize=14)
+plt.xlabel("X Coordinate")
+plt.ylabel("Y Coordinate")
+plt.show()
+
+# Optional: histogram for X and Y coordinates separately
+plt.figure(figsize=(12,5))
+plt.subplot(1,2,1)
+plt.hist(Y_sample[:,0], bins=50, color='skyblue', edgecolor='black')
+plt.title("Histogram of X Coordinates")
+plt.subplot(1,2,2)
+plt.hist(Y_sample[:,1], bins=50, color='salmon', edgecolor='black')
+plt.title("Histogram of Y Coordinates")
+plt.show()

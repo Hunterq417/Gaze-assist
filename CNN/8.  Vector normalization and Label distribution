@@ -1,0 +1,23 @@
+# ---- Normalize Y_train and Y_test ----
+# Each gaze vector is scaled to unit length
+Y_train_norm = Y_train / np.linalg.norm(Y_train, axis=1, keepdims=True)
+Y_test_norm  = Y_test  / np.linalg.norm(Y_test, axis=1, keepdims=True)
+
+# ---- Verify normalization ----
+print(f"🔹 Example normalized gaze vector (first sample): {Y_train_norm[0]}")
+print(f"🔹 Norm of first sample vector: {np.linalg.norm(Y_train_norm[0]):.4f}")
+
+label_stats = pd.DataFrame({
+    "Statistic": ["Mean X", "Mean Y", "Mean Z",
+                  "Std X", "Std Y", "Std Z"],
+    "Value": [
+        np.mean(Y_train_norm[:,0]),
+        np.mean(Y_train_norm[:,1]),
+        np.mean(Y_train_norm[:,2]),
+        np.std(Y_train_norm[:,0]),
+        np.std(Y_train_norm[:,1]),
+        np.std(Y_train_norm[:,2])
+    ]
+})
+
+label_stats

@@ -1,0 +1,18 @@
+import numpy as np
+from sklearn.model_selection import train_test_split
+
+# Check the range of values in X_sample
+print(f"🔹 X_sample range: min = {X_sample.min():.4f}, max = {X_sample.max():.4f}")
+
+# Split dataset into training and testing sets
+X_train, X_test, Y_train, Y_test = train_test_split(
+    X_sample, Y_sample,
+    test_size=0.2,   # 20% for testing
+    random_state=42  # ensures reproducibility
+)
+
+# ---- Print shapes of all splits ----
+print(f"X_train shape: {X_train.shape}")
+print(f"Y_train shape: {Y_train.shape}")
+print(f"X_test shape: {X_test.shape}")
+print(f"Y_test shape: {Y_test.shape}")
