@@ -248,7 +248,9 @@ def tracking_loop():
     face_error_logged = False
     face_missing_frames = 0
 
-    screen_w = screen_h = None
+    # Headless/cloud environments may not expose a display. Use a fallback
+    # resolution for normalized mapping while keeping OS mouse movement disabled.
+    screen_w, screen_h = 1920, 1080
     last_mouse_x = 0.5
     last_mouse_y = 0.5
     if pyautogui is not None:
@@ -257,7 +259,9 @@ def tracking_loop():
             logger.info(f"Mouse control enabled at {screen_w}x{screen_h}")
         except Exception as e:
             logger.warning(f"pyautogui screen size error: {e}")
-            screen_w = screen_h = None
+            logger.info(
+                f"Using fallback virtual screen size {screen_w}x{screen_h} for tracking"
+            )
 
     while state.running:
         ret, frame = cap.read()
@@ -463,5 +467,8 @@ def on_stop_tracking():
 
 
 if __name__ == '__main__':
-    logger.info("=== GazeAssist Eye Tracker on http://0.0.0.0:5001 ===")
-    socketio.run(app, host='0.0.0.0', port=5001, debug=False, allow_unsafe_werkzeug=True)
+    port = int(os.getenv("PORT", "5001"))
+    logger.info(f"=== GazeAssist Eye Tracker on http://0.0.0.0:{port} ===")
+    socketio.run(
+        app, host='0.0.0.0', port=port, debug=False, allow_unsafe_werkzeug=True
+    )
