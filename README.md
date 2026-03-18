@@ -1,70 +1,149 @@
-# Getting Started with Create React App
+# GazeAssist (Eye-Controlled Mouse + Web UI)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+GazeAssist is an eye-tracking accessibility project with:
 
-## Available Scripts
+- a Python backend API for calibration/tracking control
+- a React frontend UI for setup and control
+- optional standalone Python tracker scripts
 
-In the project directory, you can run:
+This README is written so you can install and run the project on another system.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 1) System Requirements
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Python 3.10+ (recommended 3.11)
+- Node.js 20+ and npm
+- Webcam access
+- Windows/macOS/Linux
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 2) Project Structure
 
-### `npm run build`
+- `backend/` - Flask API + tracking integration
+- `frontend/` - React + Vite UI
+- `main.py` - optional standalone tracker entry point
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 3) Setup on a New Machine
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Step A: Copy/Extract Project
 
-### `npm run eject`
+Extract the project zip and open a terminal in the project root (`Eye-controlled-mouse`).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Step B: Backend Setup (Python)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+From project root:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+cd backend
+python -m venv .venv
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Activate the virtual environment:
 
-## Learn More
+- Windows (PowerShell):
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```powershell
+.venv\Scripts\Activate.ps1
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- macOS/Linux:
 
-### Code Splitting
+```bash
+source .venv/bin/activate
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Install dependencies:
 
-### Analyzing the Bundle Size
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Run backend API:
 
-### Making a Progressive Web App
+```bash
+python server.py
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Backend default URL:
 
-### Advanced Configuration
+```text
+http://127.0.0.1:5050
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Health check:
 
-### Deployment
+```text
+GET /health
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Step C: Frontend Setup (React)
 
-### `npm run build` fails to minify
+Open a second terminal:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend default URL:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## 4) Running the Full App
+
+1. Start backend: `python server.py` (inside `backend/` venv).
+2. Start frontend: `npm run dev` (inside `frontend/`).
+3. Open `http://localhost:5173`.
+
+---
+
+## 5) Optional Standalone Tracker Mode
+
+From project root:
+
+```bash
+python main.py
+```
+
+IP camera mode:
+
+```bash
+python main.py --source ip --url http://YOUR_PHONE_IP:8080/shot.jpg
+```
+
+---
+
+## 6) Common Troubleshooting
+
+- **Backend unavailable in UI**
+  - Confirm `python server.py` is running on port `5050`.
+- **Camera preview not visible**
+  - Allow browser camera permission.
+  - Close other apps that may lock the camera.
+- **Frontend fails to start**
+  - Use current Node LTS and rerun `npm install`.
+- **Python dependency issues**
+  - Verify you activated the backend `.venv` before installing/running.
+
+---
+
+## 7) Build Check (Optional)
+
+To verify frontend build:
+
+```bash
+cd frontend
+npm run build
+```
+
+If this succeeds, frontend production bundling is valid.
